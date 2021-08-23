@@ -21,5 +21,6 @@
 
         <mapping class="com.example.bases2orm.sd_owners"/>
         <mapping class="com.example.bases2orm.sd_designs"/>
+        <mapping class="com.example.bases2orm.sd_problems"/>
     </session-factory>
 </hibernate-configuration>

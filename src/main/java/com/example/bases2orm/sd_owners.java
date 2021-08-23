@@ -29,6 +29,9 @@ public class sd_owners {
     @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     private List<sd_designs> ownerDesigns;
 
+    @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+    private List<sd_problems> ownerProblems;
+
     public sd_owners() {
     }
 
@@ -92,6 +95,12 @@ public class sd_owners {
         ownerDesigns.add(Design);
 
         Design.setOwner(this);
+    }
+    public void addProblems(sd_problems Problem){
+        if(ownerProblems==null) ownerProblems = new ArrayList<>();
+        ownerProblems.add(Problem);
+
+        Problem.setOwner(this);
     }
 }
 

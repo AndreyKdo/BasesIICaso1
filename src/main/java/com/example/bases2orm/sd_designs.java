@@ -31,10 +31,10 @@ public class sd_designs {
     @Column
     private BigInteger parentdesignid;//modificación realizada en el quiz (null por defecto)
 
-    public sd_designs(String title, String description, Date creationdate) {
+    public sd_designs(String title, String description) {
         this.title = title;
         this.description = description;
-        this.creationdate = creationdate;
+        this.creationdate = new Date();;
     }
 
     public sd_designs() {

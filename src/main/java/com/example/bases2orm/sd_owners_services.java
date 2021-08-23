@@ -3,9 +3,12 @@ package com.example.bases2orm;
 import Hibernate.Util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.SystemException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -16,12 +19,9 @@ public class sd_owners_services {
     public sd_owners_services(sd_owners_repository repoOwner) {
         this.repoOwner = repoOwner;
     }
-
+    @Transactional
     public void addThings(sd_owners pOwner){
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
-
-        session.beginTransaction();
+            repoOwner.save(pOwner);
     }
     public List<sd_owners> demeTodo(){
         return repoOwner.findAll();
@@ -30,5 +30,23 @@ public class sd_owners_services {
     //para guardar cambios según el Owner. Aplica para cuando se le agrega un nuevo design asociado
     public void save(sd_owners owner) {
         repoOwner.save(owner);
+    }
+    @Transactional
+    public void addOwnerProblemDesigns(sd_owners pOwner,sd_problems pProblem,sd_designs pDesign) throws SystemException {
+        Transaction tran = null;
+
+        try{
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            Session session = sessionFactory.getCurrentSession();
+            System.out.println("Se inicio la sesión");
+            tran = session.beginTransaction();
+            pOwner.addDesigns(pDesign);
+            pOwner.addProblems(pProblem);
+            session.save(pOwner);
+            tran.commit();
+        }catch (Exception e){
+            if (tran!=null) tran.rollback();
+            System.out.println("Error during transaction: "+e.toString());
+        }
     }
 }

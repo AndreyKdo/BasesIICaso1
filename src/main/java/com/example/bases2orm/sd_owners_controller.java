@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.SystemException;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +39,34 @@ public class sd_owners_controller {
     @GetMapping(path = "/adddesign")
     public void addDesign(@RequestParam("ptitle") String ptitle,
                           @RequestParam("pdescription") String pdescription,
-                          @RequestParam("pcreationdate") Date pcreationdate,
                           @RequestParam("powneremail") String powneremail){
 
         sd_owners Owner = owners_services.findByEmail(powneremail);
-        sd_designs Ownerdesign = new sd_designs(ptitle,pdescription,pcreationdate);
+        sd_designs Ownerdesign = new sd_designs(ptitle,pdescription);
         Owner.addDesigns(Ownerdesign);
         owners_services.save(Owner);
+    }
+    //método para añadir un problema más de un Owner
+    @GetMapping(path = "/addproblem")
+    public void addProblem(@RequestParam("ptitle") String ptitle,
+                           @RequestParam("pdescription") String pdescription,
+                           @RequestParam("powneremail") String powneremail){
+
+        sd_owners Owner = owners_services.findByEmail(powneremail);
+        sd_problems Ownerproblem = new sd_problems(ptitle,pdescription);
+        Owner.addProblems(Ownerproblem);
+        owners_services.save(Owner);
+    }
+    @GetMapping(path = "/addproblemAndDesign")
+    public void addOwnerProblemDesign(
+            @RequestParam("designtitle") String designtitle,
+            @RequestParam("designdescription") String designdescription,
+            @RequestParam("problemtitle") String problemtitle,
+            @RequestParam("problemdescription") String problemdescription,
+            @RequestParam("powneremail") String powneremail) throws SystemException {
+        sd_designs Ownerdesign = new sd_designs(designtitle,designdescription);
+        sd_problems Ownerproblem = new sd_problems(problemtitle,problemdescription);
+        sd_owners Owner = owners_services.findByEmail(powneremail);
+        owners_services.addOwnerProblemDesigns(Owner,Ownerproblem,Ownerdesign);
     }
 }
