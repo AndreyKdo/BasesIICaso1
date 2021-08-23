@@ -1,3 +1,9 @@
+/*
+Clase para hacer referencia a la tabla sd_problems de la base de datos de solutiondesigns
+Posee una relación N a 1 con sd_owners, y se asocia al campo/atributo ownerid
+Esta es una de las tablas, junto con sd_designs, que son afectadas por la transacción de la instrucción 3 del Caso 1
+ */
+
 package com.example.bases2orm;
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -17,6 +23,7 @@ public class sd_problems {
     private Date creationdate;
     @Column
     private boolean active;
+    //Definición de la relación N a 1 con sd_owners. Se añade el cascade como adicional
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     @JoinColumn(name="ownerid")//se indica que se hace la relación con la columna de ownerid
     private sd_owners Owner;
@@ -68,6 +75,7 @@ public class sd_problems {
     }
 
     public void setOwner(sd_owners owner) {
+        //este setter es de suma importancia ya que es llamado desde el owner para hacer la relación correspondiente
         Owner = owner;
     }
 }

@@ -1,7 +1,9 @@
 /*
-Clase/tabla sd_designs para añadir un desing de una relación 1 a N respecto a sd_owners
+Clase que hace referencia a la tabla sd_designs de la base de datos solutiondesigns
+para añadir un desing de una relación 1 a N respecto a sd_owners
 En esta clase se agrega el ManyToOne y se asocia con el ownerid de la tabla sd_owners
-
+Esta clase es la respuesta al punto 1 del Caso 1
+Esta es una de las tablas, junto con sd_problems, que son afectadas por la transacción de la instrucción 3 del Caso 1
  */
 package com.example.bases2orm;
 import javax.persistence.*;
@@ -29,12 +31,12 @@ public class sd_designs {
     @Column
     private boolean active;
     @Column
-    private BigInteger parentdesignid;//modificación realizada en el quiz (null por defecto)
+    private BigInteger parentdesignid;//modificación realizada en la base de datos original de solutiondesigns debido al quiz 1 (null por defecto)
 
     public sd_designs(String title, String description) {
         this.title = title;
         this.description = description;
-        this.creationdate = new Date();;
+        this.creationdate = new Date();//la fecha se setea con el objeto propio de Java. Se evita ser pasado por parámetro
     }
 
     public sd_designs() {
@@ -45,6 +47,7 @@ public class sd_designs {
         return Owner;
     }
 
+    //setOwner es llamado desde la instancia sd_owners que se le está asociando
     public void setOwner(sd_owners owner) {
         Owner = owner;
     }

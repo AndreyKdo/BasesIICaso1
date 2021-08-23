@@ -1,3 +1,12 @@
+/*
+Clase que hace referencia a la tabla sd_owners de la base de datos de solutiondesigns
+Esta clase posee dos relaciones 1 a N: los problems y los designs.
+Esta clase funciona como plantilla para Spring para hacer la transformación de query a objeto y viceversa
+ entre el ORM y la base de datos.
+Los cambios realizados en este objeto influyen en los cambios realizados en la base de datos respecto a la relación
+existente entre las tablas [sd_designs]>--[sd_owners]--<[sd_problems] ya que es el parámetro pasado a los save de Spring.
+
+ */
 package com.example.bases2orm;
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -25,10 +34,10 @@ public class sd_owners {
     @Column
     private Date creationdate;
 
-    //para especificar que un owner tiene muchos diseños
+    //para especificar que un owner tiene muchos diseños (respuesta del punto 1 del Caso)
     @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     private List<sd_designs> ownerDesigns;
-
+    //para especificar que un owner tiene muchos problemas
     @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     private List<sd_problems> ownerProblems;
 
@@ -89,17 +98,17 @@ public class sd_owners {
         this.creationdate = creationdate;
     }
 
+    //Este método addDesigns es parte de la respuesta 1 del Caso
     //se agregan los diseños desde el lado del cliente para realizar la relación 1 a N
     public void addDesigns(sd_designs Design){
         if(ownerDesigns==null) ownerDesigns = new ArrayList<>();
-        ownerDesigns.add(Design);
-
-        Design.setOwner(this);
+        ownerDesigns.add(Design);//agrega a la lista de diseños del owner instanciados el nuevo diseño
+        Design.setOwner(this);//se le setea al diseño creado el owner actual para relacionarlo de la forma N a 1
     }
+    //método adicional para añadir problems al owner
     public void addProblems(sd_problems Problem){
         if(ownerProblems==null) ownerProblems = new ArrayList<>();
         ownerProblems.add(Problem);
-
         Problem.setOwner(this);
     }
 }
