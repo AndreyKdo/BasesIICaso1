@@ -32,4 +32,17 @@ public class sd_owners_controller {
     public List<sd_owners> traigaTodo(){
         return controllerOwner.demeTodo();
     }
+
+    //método para añadir un diseño más de un Owner
+    @GetMapping(path = "/adddesign")
+    public void addDesign(@RequestParam("ptitle") String ptitle,
+                          @RequestParam("pdescription") String pdescription,
+                          @RequestParam("pcreationdate") Date pcreationdate,
+                          @RequestParam("powneremail") String powneremail){
+
+        sd_owners Owner = controllerOwner.findByEmail(powneremail);
+        sd_designs Ownerdesign = new sd_designs(ptitle,pdescription,pcreationdate);
+        Owner.addDesigns(Ownerdesign);
+        controllerOwner.save(Owner);
+    }
 }

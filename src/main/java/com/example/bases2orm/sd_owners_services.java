@@ -20,4 +20,9 @@ public class sd_owners_services {
     public List<sd_owners> demeTodo(){
         return repoOwner.findAll();
     }
+    public sd_owners findByEmail(String email){return repoOwner.findByEmail(email);}
+    //para guardar cambios según el Owner. Aplica para cuando se le agrega un nuevo design asociado
+    public void save(sd_owners owner) {
+        repoOwner.save(owner);
+    }
 }

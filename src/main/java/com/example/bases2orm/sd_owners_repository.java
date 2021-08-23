@@ -6,4 +6,5 @@ import java.math.BigInteger;
 
 public interface sd_owners_repository extends JpaRepository <sd_owners, BigInteger> {
 
+    sd_owners findByEmail(String email);//para buscar por el email a un owner
 }

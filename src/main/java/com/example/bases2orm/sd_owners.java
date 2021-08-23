@@ -1,11 +1,12 @@
 package com.example.bases2orm;
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.*;
+
 @Entity
 @Table
-
-
 public class sd_owners {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,10 @@ public class sd_owners {
     private boolean enabled;
     @Column
     private Date creationdate;
+
+    //para especificar que un owner tiene muchos diseños
+    @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
+    private List<sd_designs> ownerDesigns;
 
     public sd_owners() {
     }
@@ -79,6 +84,14 @@ public class sd_owners {
 
     public void setCreationdate(Date creationdate) {
         this.creationdate = creationdate;
+    }
+
+    //se agregan los diseños desde el lado del cliente para realizar la relación 1 a N
+    public void addDesigns(sd_designs Design){
+        if(ownerDesigns==null) ownerDesigns = new ArrayList<>();
+        ownerDesigns.add(Design);
+
+        Design.setOwner(this);
     }
 }
 
