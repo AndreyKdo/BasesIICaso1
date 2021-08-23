@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">
+            jdbc:sqlserver://localhost;databaseName=solutiondesigns;instanceName=MSSQLSERVER;</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.show_sql">true</property>
+
+        <!--Configuration for the connection pool-->
+        <property name="hibernate.c3p0.min_size">3</property>               <!--Minimum amount of connections-->
+        <property name="hibernate.c3p0.max_size">12</property>              <!--Maximum amount of connections-->
+        <property name="hibernate.c3p0.timeout">1000</property>              <!--Seconds before discarding an unused connection-->
+        <property name="hibernate.c3p0.max_statements">50</property>        <!--Number of prepared statements will be cached-->
+        <property name="hibernate.c3p0.idle_test_period">1200</property>    <!--Seconds before a connection is automatically validated-->
+
+        <mapping class="com.example.bases2orm.sd_owners"/>
+        <mapping class="com.example.bases2orm.sd_designs"/>
+    </session-factory>
+</hibernate-configuration>

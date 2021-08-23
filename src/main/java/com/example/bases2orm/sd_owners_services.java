@@ -1,5 +1,8 @@
 package com.example.bases2orm;
 
+import Hibernate.Util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,10 @@ public class sd_owners_services {
     }
 
     public void addThings(sd_owners pOwner){
-        repoOwner.save(pOwner);
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
     }
     public List<sd_owners> demeTodo(){
         return repoOwner.findAll();

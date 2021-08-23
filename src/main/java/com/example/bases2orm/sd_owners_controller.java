@@ -13,10 +13,10 @@ import java.util.List;
 @RequestMapping(path = "/api")
 public class sd_owners_controller {
     @Autowired
-    private final sd_owners_services controllerOwner;
+    private final sd_owners_services owners_services;
 
     public sd_owners_controller(sd_owners_services controllerOwner) {
-        this.controllerOwner = controllerOwner;
+        this.owners_services = controllerOwner;
     }
     @GetMapping(path = "/add")
     public void add(@RequestParam("pfirstname") String pfirstname,
@@ -26,11 +26,11 @@ public class sd_owners_controller {
                     @RequestParam("penabled") boolean penabled,
                     @RequestParam("pcreationdate") Date pcreationdate){
         sd_owners Owners = new sd_owners(pfirstname,plastname,pemail,ppassword,penabled,pcreationdate);
-        controllerOwner.addThings(Owners);
+        owners_services.addThings(Owners);
     }
     @GetMapping(path = "/select")
     public List<sd_owners> traigaTodo(){
-        return controllerOwner.demeTodo();
+        return owners_services.demeTodo();
     }
 
     //método para añadir un diseño más de un Owner
@@ -40,9 +40,9 @@ public class sd_owners_controller {
                           @RequestParam("pcreationdate") Date pcreationdate,
                           @RequestParam("powneremail") String powneremail){
 
-        sd_owners Owner = controllerOwner.findByEmail(powneremail);
+        sd_owners Owner = owners_services.findByEmail(powneremail);
         sd_designs Ownerdesign = new sd_designs(ptitle,pdescription,pcreationdate);
         Owner.addDesigns(Ownerdesign);
-        controllerOwner.save(Owner);
+        owners_services.save(Owner);
     }
 }
