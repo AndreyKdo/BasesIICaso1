@@ -37,7 +37,7 @@ public class sd_owners_services {
 
         try{
             SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-            Session session = sessionFactory.getCurrentSession();
+            Session session = sessionFactory.getCurrentSession(); // Aqui utilizamos la sesión que se maneja como Singleton
             System.out.println("Se inicio la sesión");
             tran = session.beginTransaction();
             pOwner.addDesigns(pDesign);

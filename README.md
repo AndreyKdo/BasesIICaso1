@@ -36,7 +36,20 @@ Antes de realizar el caso, se investigó y se desarrolló el ORM del lenguaje de
 
 
 
-*Respuesta al punto 2 por aquí*
+#• Como respuesta al segundo punto, se detallan los pasos llevados a cabo a continuación:
+
+1. Cabe destacar de antemano que Hibernate/Spring ya nos provee de un connection pooling pero no nos dan las herramientas directas para poder modificarlas por nuestra cuenta, por lo que se implementó la librería de c3p0 que nos permite determinar el mínimo, máximo de conexiones, timeouts, etc. que es necesaria para tener un manejo explícito del connection pooling.
+
+2. Posteriormente definimos la clase HibernateUtil, la cual se encarga de administrar bajo el patrón Singleton la creación de sesiones que realziarán las conexiones a la base de datos. Esta tiene un SessionFactory que permite crear distintas sessions pero nosotros solo creamos un único factory que a pesar de poder manejar distintas sesiones solo creamos 1 en todo el programa. 
+
+Por lo que, como se puede ver en el archivo sd_owners_services.java en la línea 39-40 obtenemos la instancia de la session que se encarga de realizar el manejo del connection pooling. Esto se logra al declarar un atributo de caracter private y static, es decir, para toda instancia de la clase HibernateUtil que acceda al SessionFactory siempre será el mismo valor. 
+
+Cabe destacar que en el archivo hibernate.cfg.xml es donde se encuentran las configuraciones del SessionFactory utilizadas para crear la session, esta se ubica en la carpeta de resources.
+
+3. Gracias a lo descrito anteriormente, tenemos un connnection pooling donde cada solitiud que llega al API es manejada por un único objeto en cuanto a las conexiones se refiere. Esta fue utilizada junto con la transacción en el archivo de sd_owners_services.java.
+
+
+
 
 
  
