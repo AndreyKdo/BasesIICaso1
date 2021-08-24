@@ -36,12 +36,16 @@ public class sd_owners {
 
     //para especificar que un owner tiene muchos diseños (respuesta del punto 1 del Caso)
     @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
-    private List<sd_designs> ownerDesigns;
+    private List<sd_designs> ownerDesigns = new ArrayList<sd_designs>();
     //para especificar que un owner tiene muchos problemas
     @OneToMany(mappedBy = "Owner",cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.REFRESH})
     private List<sd_problems> ownerProblems;
 
     public sd_owners() {
+    }
+
+    public void setOwnerDesigns(List<sd_designs> ownerDesigns) {
+        this.ownerDesigns = ownerDesigns;
     }
 
     public sd_owners(String firstname, String lastname, String email, byte[] password, boolean enabled, Date creationdate) {
@@ -98,10 +102,13 @@ public class sd_owners {
         this.creationdate = creationdate;
     }
 
+    public List<sd_designs> getOwnerDesigns() {
+        return ownerDesigns;
+    }
+
     //Este método addDesigns es parte de la respuesta 1 del Caso
     //se agregan los diseños desde el lado del cliente para realizar la relación 1 a N
     public void addDesigns(sd_designs Design){
-        if(ownerDesigns==null) ownerDesigns = new ArrayList<>();
         ownerDesigns.add(Design);//agrega a la lista de diseños del owner instanciados el nuevo diseño
         Design.setOwner(this);//se le setea al diseño creado el owner actual para relacionarlo de la forma N a 1
     }

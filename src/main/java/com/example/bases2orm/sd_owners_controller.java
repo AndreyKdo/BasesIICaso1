@@ -51,7 +51,7 @@ public class sd_owners_controller {
         Owner.addDesigns(Ownerdesign); //se llama a la instancia de Owner para realizar la relación 1 a N
         owners_services.save(Owner); //se guardan los cambios en la base de datos
     }
-    //**************** Método respuesta a la instrucción 3 del Caso 1 ***********************//
+    //**************** Método respuesta a la instrucción 3 del Caso 1 ************************//
     //método para llevar a cabo la transacción. La misma se ejecuta en la clase sd_owners_services
     @GetMapping(path = "/addproblemAndDesign")//directorio http://localhost:8080/api/addproblemAndDesign?
     public void addOwnerProblemDesign(
@@ -66,5 +66,12 @@ public class sd_owners_controller {
         //se obtiene el owner que tiene la relación 1 a N con los objetos anteriores
         sd_owners Owner = owners_services.findByEmail(powneremail);
         owners_services.addOwnerProblemDesigns(Owner,Ownerproblem,Ownerdesign);//llamada a la transacción en sd_owners_services
+    }
+    @GetMapping(path = "/cargarDesignsPerOwner")
+    public void cargarDesignsPerOwner(
+            @RequestParam("powneremail") String powneremail
+    ){
+        sd_owners Owner = owners_services.findByEmail(powneremail);
+        Owner.getOwnerDesigns().forEach(System.out::println);
     }
 }
